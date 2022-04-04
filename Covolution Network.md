@@ -1,11 +1,14 @@
 # Tips related to CNN
 Random knowledge on CNN models
+
 - [Tips related to CNN](#tips-related-to-cnn)
   * [What filters do exactly?](#what-filters-do-exactly-)
   * [Why padding layer is useful?](#why-padding-layer-is-useful-)
   * [Why deeper layers capture larger scale features than previous layers?](#why-deeper-layers-capture-larger-scale-features-than-previous-layers-)
+  * [Why ResNet saves deep learning?](#why-resnet-saves-deep-learning-)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 
 
 ## What filters do exactly?
@@ -50,3 +53,11 @@ It is easy to see 3 consecutive CNN layers with kernel size 3x3 has much less we
 
 
 
+## Why ResNet saves deep learning?
+From AlexNet to VGG nets, besides kernel configuration, the layer depth also increased. From there, people thought, the deeper the layers, the higher the accuracy(ignore the computational power). However, people found it is not true at all. The following example shows an example we stack 20 vgg layers vs 56 vgg layers. We observe that 56 layers performs worse on both train and test data.
+![enter image description here](https://raw.github.com/XINZHANG-ops/LearningNotes/master/images/20vs56error.png)
+It is obvious that, the additional layers we add from 20 to 56, some of them have reverse effect on performance, but we have no idea which layers are helping, which layers are bad ones. This is truely disaster for deep learning, since more layers backfire on us. 
+The **ResNet**  saves the day, letting us put whatever many layers as we want. The idea is simple, is there a way we can let the model learn which layers are useless and simply skip them when do forward pass?
+The image below shows vgg16 vs vgg19 vs resnet. So resnet connect layers in a skipping layer way. This way is so smart that during training, if the model finds any of the blocks are doing bad, the model can simly skip these layers by setting their weights close to zero through backpropagation, and go around the blcok with the alternative connections.
+In this way, we can again put many layers as we wanted before, thanks to the skipping connections we make sure these bad layers will not pull us back.
+![enter image description here](https://raw.github.com/XINZHANG-ops/LearningNotes/master/images/vgg16vgg19resnet.png)
